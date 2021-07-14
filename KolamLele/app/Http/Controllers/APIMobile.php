@@ -66,7 +66,6 @@ class APIMobile extends Controller
     public function terkini($alat)
     {
         // Data::create(['ph'=> rand(3,11),'suhu1'=> rand(10,80),'suhu2'=> rand(10,80),'suhu3'=> rand(10,80),'suhu4'=> rand(10,80),'kolam'=> '2']);
-
         $data = Data::latest()->where('kolam',$alat)->take(1)->get()->sortByDesc('id');
         // $last = Data::latest()->take(1)->get()->sortBy('id');
         // $waktu = $data->pluck('created_at');
@@ -93,6 +92,47 @@ class APIMobile extends Controller
             array_push($riwayat,$d);
         };
         return response()->json(['data'=>$riwayat]);
+    }
+
+    public function tambah(Request $request)
+    {
+        //
+        Kolam::create([
+            'pemilik'=> $request->id,
+            'id_kolam'=>$request->alat,
+            'nama_kolam'=>$request->nama, 
+            ]);
+            return response()->json([
+                'status'=>true,
+                'pesan'=>'Data Berhasil Ditambah'
+            ]);
+    }
+
+    public function update(Request $request, $idAlat){
+
+                $pemilik    =$request->id;
+                $alat       =$request->alat;
+                $nama_kolam =$request->nama;
+
+            Kolam::where('id',$idAlat)->update([
+                'pemilik'=> $pemilik,
+                'id_kolam'=>$alat,
+                'nama_kolam'=>$nama_kolam,
+            ]);
+            return response()->json([
+                'status'=>true,
+                'pesan'=>'Data Berhasil Diupdate'
+            ]);
+
+            
+    }
+
+    public function hapus($id){
+        Kolam::find($id)->delete();
+        return response()->json([
+            'status'=>true,
+            'pesan'=>'Data Berhasil Dihapus'
+        ]);
     }
 
     public function kolam($id)
