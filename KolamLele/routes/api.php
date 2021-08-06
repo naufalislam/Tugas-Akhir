@@ -21,9 +21,10 @@ Route::post('/send', 'ApiController@post');
 Route::post('/login', 'APIMobile@login');
 Route::post('/tambah', 'APIMobile@tambah');
 Route::put('/update/{alat}', 'APIMobile@update');
-Route::delete('/hapus', 'APIMobile@hapus');
+Route::delete('/hapus/{id}', 'APIMobile@hapus');
 
 
 Route::get('/riwayat/{alat}', 'APIMobile@riwayat');
 Route::get('/terkini/{alat}', 'APIMobile@terkini');
 Route::get('/kolam/{id}', 'APIMobile@kolam');
+Route::get('/jumlah_alat/{id}','APIMobile@jumlah_alat');

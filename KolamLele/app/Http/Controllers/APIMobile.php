@@ -61,11 +61,14 @@ class APIMobile extends Controller
             $d['waktu']= $waktu;
             array_push($riwayat,$d);
         };
-        return response()->json(['data'=>$riwayat]);
+        return response()->json([
+            'status'=>true,
+            'data'=>$riwayat
+        ]);
     }
     public function terkini($alat)
     {
-        // Data::create(['ph'=> rand(3,11),'suhu1'=> rand(10,80),'suhu2'=> rand(10,80),'suhu3'=> rand(10,80),'suhu4'=> rand(10,80),'kolam'=> '2']);
+        // Data::create(['ph'=> rand(6.8,7),'suhu1'=> rand(30,32),'suhu2'=> rand(28,30),'suhu3'=> rand(28,32),'suhu4'=> rand(29,30),'kolam'=> '45']);
         $data = Data::latest()->where('kolam',$alat)->take(1)->get()->sortByDesc('id');
         // $last = Data::latest()->take(1)->get()->sortBy('id');
         // $waktu = $data->pluck('created_at');
@@ -91,7 +94,10 @@ class APIMobile extends Controller
             $d['waktu']= $waktu;
             array_push($riwayat,$d);
         };
-        return response()->json(['data'=>$riwayat]);
+        return response()->json([
+            'status'=>true,
+            'data'=>$riwayat
+        ]);
     }
 
     public function tambah(Request $request)
@@ -108,14 +114,12 @@ class APIMobile extends Controller
             ]);
     }
 
-    public function update(Request $request, $idAlat){
+    public function update(Request $request, $kolam){
 
-                $pemilik    =$request->id;
                 $alat       =$request->alat;
                 $nama_kolam =$request->nama;
 
-            Kolam::where('id',$idAlat)->update([
-                'pemilik'=> $pemilik,
+            Kolam::where('id',$kolam)->update([
                 'id_kolam'=>$alat,
                 'nama_kolam'=>$nama_kolam,
             ]);
@@ -135,11 +139,21 @@ class APIMobile extends Controller
         ]);
     }
 
+    public function jumlah_alat($id){
+        $data = Kolam::latest()->where('pemilik',$id)->count();
+        return response()->json([
+            'status'=>true,
+            'data'=>$data
+        ]);
+    }
     public function kolam($id)
     {
         //
         $data = Kolam::latest()->where('pemilik',$id)->get();
-        return response()->json(['data'=>$data]);
+        return response()->json([
+            'status'=>true,
+            'data'=>$data
+        ]);
     }
 
 }
